@@ -5,11 +5,8 @@ services:
   app:
     build: .
     volumes:
-      # - type: bind
-      #   source: .
-      #   target: /app
       - .:/app
-      - /app/node_modules
+      - node_modules:/app/node_modules
     ports:
       - "8080:8080"
     depends_on:
@@ -20,12 +17,12 @@ services:
     image: mysql:8.0
     environment:
       MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: callcenter_cleaned_data
+      MYSQL_DATABASE: call_center_data
       MYSQL_USER: dev
       MYSQL_PASSWORD: password
     command: --default-authentication-plugin=mysql_native_password
     ports:
-      - "3306:3306"
+      - "33060:33060"
     volumes:
       - db-data:/var/lib/mysql
 
@@ -38,5 +35,6 @@ services:
       #   target: /sqlite.db
 
 volumes:
+  node_modules:
   db-data:
   sqlite-db:

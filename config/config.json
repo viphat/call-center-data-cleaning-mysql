@@ -1,0 +1,9 @@
+{
+  "development": {
+    "username": "dev",
+    "password": "password",
+    "database": "callcenter_cleaned_data",
+    "host": "db",
+    "dialect": "mysql"
+  }
+}

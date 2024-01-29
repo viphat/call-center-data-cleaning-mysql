@@ -11,7 +11,6 @@ services:
       - "8080:8080"
     depends_on:
       - db
-      - sqlite
 
   db:
     image: mysql:8.0
@@ -25,14 +24,6 @@ services:
       - "33060:33060"
     volumes:
       - db-data:/var/lib/mysql
-
-  sqlite:
-    image: nouchka/sqlite3
-    volumes:
-      - sqlite-db:/sqlite.db
-      # - type: bind
-      #   source: ./sqlite.db
-      #   target: /sqlite.db
 
 volumes:
   node_modules:

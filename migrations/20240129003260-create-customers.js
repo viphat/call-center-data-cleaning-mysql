@@ -206,8 +206,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       staff: {
-        type: Sequelize.INTEGER,
-        defaultValue: 0
+        type: Sequelize.TEXT
       },
       note: {
         type: Sequelize.TEXT

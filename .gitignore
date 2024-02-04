@@ -8,3 +8,5 @@ yarn-error.log
 
 # Public
 public/
+
+*.sqlite3

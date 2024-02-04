@@ -1,11 +1,143 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Hello, World!</title>
+    <title>POME 2024 - Data Cleaning Tools</title>
     <meta charset="utf-8" />
+
     <link rel="stylesheet" href="public/stylesheets/main.css" />
+
+    <script src="//unpkg.com/alpinejs" defer></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+      rel="stylesheet"
+    />
   </head>
-  <body>
-    <div class="text-red-500">Hello, World!</div>
+  <body x-data="pageActions()">
+    <div class="container mx-auto mt-8">
+      <div class="flex justify-center mb-4">
+        <img src="assets/logo.png" alt="Intage Vietnam" />
+      </div>
+
+      <div
+        class="w-2/3 mx-auto bg-white shadow-md rounded-xl px-8 pt-6 pb-8 mb-4"
+      >
+        <h1 class="text-3xl font-bold text-center text-red-700">POME 2024</h1>
+        <p class="text-center text-xl text-red-500 mt-2 mb-8">
+          POME 2024 - Data Cleaning Tools
+        </p>
+        <form id="mainForm" x-on:submit.prevent="importData">
+          <div class="flex justify-center">
+            <div class="w-3/4">
+              <label
+                class="block text-gray-700 text-sm font-bold mb-2"
+                for="inputFile"
+              >
+                Input File (.xlsx file only)
+              </label>
+              <input
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="inputFile"
+                type="file"
+                name="inputFile"
+              />
+            </div>
+          </div>
+
+          <div class="flex justify-center mt-4">
+            <div class="w-3/4">
+              <label
+                class="block text-gray-700 text-sm font-bold mb-2"
+                for="file"
+              >
+                Source
+              </label>
+              <select
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="source"
+                name="source"
+              >
+                <option value="IMC">IMC</option>
+                <option value="OTB">OTB</option>
+                <option value="OTB-LHTS">OTB LHTS</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="flex justify-center mt-4">
+            <div class="w-3/4">
+              <label
+                class="block text-gray-700 text-sm font-bold mb-2"
+                for="file"
+              >
+                Batch
+              </label>
+              <input
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="batch"
+                type="text"
+                name="batch"
+              />
+            </div>
+          </div>
+
+          <div class="flex justify-center mt-8">
+            <div class="w-3/4">
+              <button
+                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                type="submit"
+              >
+                <i class="fa fa-rocket"></i>
+                Import Data
+              </button>
+
+              <button
+                type="button"
+                x-on:click="exportData"
+                class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              >
+                <i class="fa fa-suitcase"></i>
+                Xuất Report
+              </button>
+            </div>
+          </div>
+
+          <div class="flex justify-center mt-4">
+            <div class="w-3/4">
+              <button
+                type="button"
+                x-on:click="deleteDataByBatch"
+                class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              >
+                <i class="fa fa-trash"></i>
+                Xóa Data theo Batch
+              </button>
+            </div>
+          </div>
+
+          <div class="flex justify-center mt-4">
+            <div class="w-3/4">
+              <button
+                type="button"
+                x-on:click="checkData"
+                class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              >
+                <i class="fa fa-check-circle"></i>
+                Kiểm tra Data
+              </button>
+
+              <button
+                type="button"
+                x-on:click="importHospital"
+                class="bg-purple-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              >
+                <i class="fa fa-clock-o"></i>
+                Import Bệnh Viện
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <script src="client/main.js"></script>
   </body>
 </html>

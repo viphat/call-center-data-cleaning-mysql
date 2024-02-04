@@ -1,12 +1,11 @@
 #!/usr/bin/env node
 console.log('Running Data Migration for Customers Table (From Sqlite3 to MySQL)...');
 
-const sourceFilePath = "./input/sqlite3/db.sqlite3";
-
 const Province = require('../models').Province;
 
 // Load the source database by sqlite3
 const sqlite3 = require('sqlite3').verbose();
+const sourceFilePath = "./input/db.sqlite3";
 const sourceDb = new sqlite3.Database(sourceFilePath);
 
 async function importProvince(row) {

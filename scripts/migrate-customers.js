@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 console.log('Running Data Migration for Customers Table (From Sqlite3 to MySQL)...');
 
-const sourceFilePath = "./input/sqlite3/db.sqlite3";
 const args = process.argv.slice(2);
 const startingCustomerId = args[0] || 1;
 
@@ -9,6 +8,7 @@ const Customer = require('../models').Customer;
 
 // Load the source database by sqlite3
 const sqlite3 = require('sqlite3').verbose();
+const sourceFilePath = "./input/db.sqlite3";
 const sourceDb = new sqlite3.Database(sourceFilePath);
 
 async function insertCustomer(row) {

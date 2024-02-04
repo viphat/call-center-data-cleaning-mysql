@@ -12,7 +12,10 @@ public/
 *.sqlite3
 
 output/*
--output/.gitkeep
+!output/.gitkeep
 
 uploads/*
--uploads/.gitkeep
+!uploads/.gitkeep
+
+input/*
+!input/.gitkeep

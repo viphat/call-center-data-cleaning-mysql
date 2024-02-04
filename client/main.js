@@ -1,7 +1,10 @@
 function pageActions() {
   return {
+    isProcessing: false,
     importData() {
       console.log('importData');
+
+      this.isProcessing = true;
       var formData = new FormData(document.getElementById('mainForm'));
       fetch('/import', {
         method: 'POST',
@@ -17,6 +20,8 @@ function pageActions() {
       }).catch(error => {
         alert(error.message);
         console.error('There has been a problem with your fetch operation:', error);
+      }).finally(() => {
+        this.isProcessing = false;
       });
     },
     exportData() {

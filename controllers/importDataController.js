@@ -1,4 +1,7 @@
 const multer = require('multer');
+const path = require('path');
+
+const { importExcelFile } = require('../services/importExcelFileService');
 
 // Set Storage Engine
 const storage = multer.diskStorage({
@@ -21,28 +24,36 @@ const upload = multer({
 function checkFileType(file, cb) {
   const filetypes = /xlsx/;
   const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-  const mimetype = filetypes.test(file.mimetype);
+  const mimetype = file.mimetype === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
 
   if (extname && mimetype) {
     console.log('File accepted')
     return cb(null, true);
-  } else {
-    cb('Error: Only .xlsx files are allowed!');
   }
+
+  return cb('Error: Only .xlsx files are allowed!');
 }
 
 const importDataController = {
   importData: async (req, res) => {
-    upload(req, res, (err) => {
+    upload(req, res, async (err) => {
       if (err) {
-        res.status(400).send(err);
-      } else {
-        if (req.file == undefined) {
-          res.status(400).send('Error: No File Selected!');
-        } else {
-          res.send('File Uploaded!');
-        }
+        return res.status(400).send(err);
       }
+
+      const batch = req.body.batch;
+      const source = req.body.source;
+
+      if (batch == undefined || source == undefined) {
+        return res.status(400).send('Error: Batch or Source is undefined!');
+      }
+
+      if (req.file == undefined) {
+        return res.status(400).send('Error: No File Selected!');
+      }
+
+      await importExcelFile(req.file);
+      return res.send('Imported successfully!');
     });
   },
 }

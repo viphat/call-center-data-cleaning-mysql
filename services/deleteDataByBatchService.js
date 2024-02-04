@@ -1,11 +1,12 @@
 const Customer = require('../models/customers');
 
 const deleteDataByBatchService = {
-  deleteCustomersByBatch: async (batch) => {
+  deleteCustomersByBatch: async (batch, source) => {
     try {
       const result = await Customer.destroy({
         where: {
-          batch: batch
+          batch: batch,
+          source: source
         }
       });
       return result;

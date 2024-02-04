@@ -10,3 +10,9 @@ yarn-error.log
 public/
 
 *.sqlite3
+
+output/*
+-output/.gitkeep
+
+uploads/*
+-uploads/.gitkeep

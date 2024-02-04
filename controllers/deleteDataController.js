@@ -1,3 +1,4 @@
+const { deleteCustomersByBatch } = require('../services/deleteDataByBatchService');
 
 const deleteDataController = {
   deleteData: async (req, res) => {
@@ -5,7 +6,8 @@ const deleteDataController = {
     const batch = req.body.batch;
     console.log('batch:', batch);
     if (batch) {
-      res.send(`Đã xoá dữ liệu batch ${batch} thành công!`);
+      const result = await deleteCustomersByBatch(batch);
+      res.send(result);
     } else {
       res.status(400).send('Error: Chưa khai báo batch!');
     }

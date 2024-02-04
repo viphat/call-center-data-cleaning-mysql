@@ -40,7 +40,8 @@ function pageActions() {
 
         return response.text().then(text => Promise.reject(new Error(text)));
       }).then(text => {
-        console.log(text);
+        document.getElementById('batch').value = '';
+        alert("Xóa dữ liệu thành công!");
       }).catch(error => {
         alert(error.message);
         console.error('There has been a problem with your fetch operation:', error);

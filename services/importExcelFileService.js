@@ -3,10 +3,15 @@ const _ = require('lodash');
 const Excel = require('exceljs');
 const padStart = require('string.prototype.padstart');
 
+const { generateExcelTemplate } = require('./excelTemplateService');
+
+const OUTPUT_PATH = './output/';
+
 const importExcelFileService = {
   importExcelFile: async (file, source, batch) => {
     const service = new ImportExcelFileService(file, source, batch);
-    return file;
+    const outputPath = await service.import();
+    return outputPath;
   },
 }
 
@@ -66,8 +71,13 @@ class ImportExcelFileService {
     await workbook.xlsx.readFile(this.file.path);
     const worksheet = workbook.getWorksheet(1);
 
-    worksheet.eachRow({ includeEmpty: true }, (row, rowNumber) => {
-    });
+    const outputPath = OUTPUT_PATH + this.batch + '_' + this.source + '_' + Date.now() + '_cleaned.xlsx';
+
+    const outputWorkbook = await generateExcelTemplate(outputPath);
+
+    outputWorkbook.xlsx.readFile(outputPath);
+
+    return outputPath;
   }
 }
 

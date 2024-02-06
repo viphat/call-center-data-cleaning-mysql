@@ -35,7 +35,7 @@ function checkFileType(file, cb) {
 }
 
 const importDataController = {
-  importData: async (req, res) => {
+  importData: (req, res) => {
     upload(req, res, async (err) => {
       if (err) {
         return res.status(400).send(err);
@@ -52,8 +52,18 @@ const importDataController = {
         return res.status(400).send('Error: No File Selected!');
       }
 
-      await importExcelFile(req.file);
-      return res.send('Imported successfully!');
+      const outputPath = await importExcelFile(req.file, source, batch);
+      console.log('outputPath', outputPath);
+
+      // send file to browser (download)
+      res.set('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+      const filename = outputPath.split('/').pop();
+
+      res.download(outputPath, filename, (err) => {
+        if (err) {
+          return res.status(500).send('Error: Could not download the file. ' + err);
+        }
+      });
     });
   },
 }

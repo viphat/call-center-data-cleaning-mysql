@@ -9,7 +9,8 @@ module.exports = (sequelize, DataTypes) => {
     province_id: DataTypes.INTEGER
   }, {
     tableName: 'hospitals',
-    timestamps: false
+    timestamps: false,
+    strict: true
   });
 
   Hospital.associate = function(models) {

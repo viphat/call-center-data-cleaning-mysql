@@ -11,7 +11,8 @@ module.exports = (sequelize, DataTypes) => {
     }
   }, {
     tableName: 'matches',
-    timestamps: false
+    timestamps: false,
+    strict: true
   });
 
   Match.associate = function(models) {

@@ -180,7 +180,8 @@ module.exports = (sequelize, DataTypes) => {
     },
   }, {
     tableName: 'customers',
-    timestamps: false
+    timestamps: false,
+    strict: true
   });
 
   Customer.associate = function(models) {

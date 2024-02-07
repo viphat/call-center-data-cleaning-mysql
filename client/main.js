@@ -40,13 +40,16 @@ function pageActions() {
     deleteDataByBatch() {
       console.log('deleteDataByBatch');
       var batch = document.getElementById('batch').value;
+      var source = document.getElementById('source').value;
+
       fetch('/delete_data_by_batch', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          batch: batch
+          batch: batch,
+          source: source
         })
       }).then(response => {
         if (response.ok) {

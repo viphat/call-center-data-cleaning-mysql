@@ -4,6 +4,10 @@ const padStart = require('string.prototype.padstart');
 
 const { generateExcelTemplate } = require('./excelTemplateService');
 const { createCustomer } = require('./createCustomerService');
+const Customer = require('../models').Customer;
+const { writeExcelFile } = require('./writeExcelFileService');
+
+const { sequelize } = require('../models/index');
 
 const OUTPUT_PATH = './output/';
 
@@ -73,28 +77,34 @@ class ImportExcelFileService {
 
     const outputPath = OUTPUT_PATH + this.batch + '_' + this.source + '_' + Date.now() + '_cleaned.xlsx';
 
-    const outputWorkbook = await generateExcelTemplate(outputPath);
-
-    outputWorkbook.xlsx.readFile(outputPath);
+    let outputWorkbook = await generateExcelTemplate(outputPath);
 
     for (let i = this.dataBeginRow; i <= worksheet.rowCount; i++) {
       if (isEmptyRow(worksheet.getRow(i))) {
         break;
       }
-      readEachRow(worksheet, i);
+
+      outputWorkbook = await this.readEachRow(outputWorkbook, worksheet, i);
+
+      if (i % 1000 === 0) {
+        // Wait for 0.5 seconds
+        await new Promise(resolve => setTimeout(resolve, 500));
+      }
     }
+
+    await outputWorkbook.xlsx.writeFile(outputPath);
 
     return outputPath;
   }
 
-  async readEachRow(worksheet, rowNumber) {
+  async readEachRow(outputWorkbook, worksheet, rowNumber) {
     const row = worksheet.getRow(rowNumber);
     console.log('Row: ' + rowNumber);
 
     let source = this.source;
     let batch = this.batch;
 
-    let hospitalName = row.getCell(hospitalNameCol).value;
+    let hospitalName = row.getCell(this.hospitalNameCol).value;
     hospitalName = hospitalName.trim().replace(/\s+/g, ' ');
 
     let collectedDate
@@ -139,7 +149,7 @@ class ImportExcelFileService {
       province = '';
     }
 
-    const hospital = await getHospital(hospitalName);
+    const hospital = await this.getHospital(hospitalName);
 
     let customer = {
       lastName: lastName,
@@ -173,16 +183,125 @@ class ImportExcelFileService {
       customer.sampling = 'S2';
     }
 
-    customer = createCustomer(customer);
+    customer = await createCustomer(customer);
+
     let duplicateData = customer.isPhoneDuplicated;
-    let missingData = isMissingData(customer, row);
-    let illogicalData = isIllogicalData(customer, row);
+    let missingData = this.isMissingData(customer, row);
+    let illogicalData = this.isIllogicalData(customer, row);
     let duplicateDataWithAnotherAgency = customer.isPhoneDuplicatedWithAnotherAgency;
 
+    let rowData = [
+      customer.customer_id,
+      customer.lastName,
+      customer.firstName,
+      customer.email,
+      customer.district,
+      customer.province,
+      row.getCell(this.phoneCol).value,
+      customer.day,
+      customer.month,
+      customer.year,
+      customer.s1,
+      customer.s2,
+      hospital.hospital_name,
+      hospital.province_name,
+      hospital.area_channel,
+      hospital.area_name,
+      customer.source,
+      customer.collectedDay,
+      customer.collectedMonth,
+      customer.collectedYear,
+      customer.staff,
+      customer.note,
+      customer.pgCode,
+      customer.qrCode
+    ];
 
+    let outputSheetName = 'Valid';
 
+    if (duplicateData === true) {
+      if (customer.duplicatedWithinPast2Years === 1) {
+        outputSheetName = 'Duplication - Within 24 Months';
+      } else {
+        outputSheetName = 'Duplication - Over 24 Months';
+      }
+    } else if (missingData || illogicalData) {
+      outputSheetName = 'Invalid';
+    } else if (duplicateDataWithAnotherAgency === true) {
+      outputSheetName = 'Duplication With Another Agency';
+    }
 
+    if (duplicateData == true || missingData == true || illogicalData == true) {
+      // Update Database
+      customer.hasError = 1;
+      if (missingData) {
+        customer.missingData = 1;
+      }
+      if (illogicalData) {
+        customer.illogicalData = 1;
+      }
+    }
 
+    await Customer.update(customer, {
+      where: {
+        customer_id: customer.customer_id
+      }
+    });
+
+    var toHighlight = false;
+    var duplicatedRow = false;
+
+    if (duplicateData == true || duplicateDataWithAnotherAgency == true) {
+      var duplicatedWith;
+
+      if (duplicateDataWithAnotherAgency) {
+        duplicatedWith = customer.duplicateWithAnotherAgency;
+      } else {
+        duplicatedWith = customer.duplicatedWith;
+      }
+
+      duplicatedRow = [
+        duplicatedWith.customer_id,
+        duplicatedWith.last_name,
+        duplicatedWith.first_name,
+        duplicatedWith.email,
+        duplicatedWith.district,
+        duplicatedWith.province,
+        duplicatedWith.phone,
+        duplicatedWith.day,
+        duplicatedWith.month,
+        duplicatedWith.year,
+        duplicatedWith.s1,
+        duplicatedWith.s2,
+        duplicatedWith.hospital_name,
+        duplicatedWith.province_name,
+        duplicatedWith.area_channel,
+        duplicatedWith.area_name,
+        duplicatedWith.source,
+        duplicatedWith.collectedDay,
+        duplicatedWith.collectedMonth,
+        duplicatedWith.collectedYear,
+        duplicatedWith.staff,
+        duplicatedWith.note,
+        duplicatedWith.pgCode,
+        duplicatedWith.qrCode,
+        duplicatedWith.batch
+      ]
+
+      if (duplicatedWith.batch == customer.batch && duplicatedWith.source == customer.source) {
+        toHighlight = true;
+      }
+
+      rowData.push(customer.batch);
+    }
+
+    if (duplicatedRow) {
+      outputWorkbook = writeExcelFile(outputWorkbook, outputSheetName, duplicatedRow, toHighlight);
+    }
+
+    outputWorkbook = writeExcelFile(outputWorkbook, outputSheetName, rowData, toHighlight);
+
+    return outputWorkbook;
   }
 
   async getHospital(hospitalName) {

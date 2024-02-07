@@ -1,4 +1,4 @@
-const Customer = require('../models/customers');
+const Customer = require('../models').Customer;
 const { Op } = require('sequelize');
 
 const createCustomerService = {
@@ -46,11 +46,11 @@ const createCustomerService = {
     const res = await Customer.findOne({
       where: {
         phone: customer.phone,
-        customer_id: {
-          [Op.ne]: customer.customer_id
-        },
         source: {
           [Op.ne]: customer.source
+        },
+        customer_id: {
+          [Op.ne]: customer.customer_id
         }
       }
     });

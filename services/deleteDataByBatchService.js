@@ -1,4 +1,4 @@
-const Customer = require('../models/customers');
+const Customer = require('../models').Customer;
 
 const deleteDataByBatchService = {
   deleteCustomersByBatch: async (batch, source) => {

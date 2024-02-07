@@ -17,7 +17,8 @@ const deleteDataController = {
     }
 
     const result = await deleteCustomersByBatch(batch, source);
-    return res.send(result);
+
+    return res.status(200).send('Xóa dữ liệu thành công!');
   },
 }
 

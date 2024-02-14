@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -16,15 +16,15 @@ module.exports = {
         type: Sequelize.INTEGER,
         references: {
           model: 'areas', // Name of the table
-          key: 'area_id',
+          key: 'area_id'
         },
         onUpdate: 'CASCADE',
         onDelete: 'SET NULL'
       }
-    });
+    })
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('provinces');
+    await queryInterface.dropTable('provinces')
   }
-};
+}

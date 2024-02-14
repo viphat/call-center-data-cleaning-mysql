@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -15,10 +15,10 @@ module.exports = {
       channel: {
         type: Sequelize.STRING
       }
-    });
+    })
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('areas');
+    await queryInterface.dropTable('areas')
   }
-};
+}

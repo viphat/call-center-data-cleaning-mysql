@@ -1099,6 +1099,7 @@ __metadata:
     mysql2: ^3.9.0
     nodemon: ^3.0.3
     postcss-cli: ^11.0.0
+    prettier: ^3.2.5
     sequelize: ^6.35.2
     sequelize-cli: ^6.6.2
     sqlite3: ^5.1.7
@@ -3595,6 +3596,15 @@ __metadata:
   bin:
     prebuild-install: bin.js
   checksum: dbf96d0146b6b5827fc8f67f72074d2e19c69628b9a7a0a17d0fad1bf37e9f06922896972e074197fc00a52eae912993e6ef5a0d471652f561df5cb516f3f467
+  languageName: node
+  linkType: hard
+
+"prettier@npm:^3.2.5":
+  version: 3.2.5
+  resolution: "prettier@npm:3.2.5"
+  bin:
+    prettier: bin/prettier.cjs
+  checksum: 2ee4e1417572372afb7a13bb446b34f20f1bf1747db77cf6ccaf57a9be005f2f15c40f903d41a6b79eec3f57fff14d32a20fb6dee1f126da48908926fe43c311
   languageName: node
   linkType: hard
 

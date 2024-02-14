@@ -1,15 +1,17 @@
 #!/usr/bin/env node
-console.log('Running Data Migration for Customers Table (From Sqlite3 to MySQL)...');
+console.log(
+  'Running Data Migration for Customers Table (From Sqlite3 to MySQL)...'
+)
 
-const args = process.argv.slice(2);
-const startingCustomerId = args[0] || 1;
+const args = process.argv.slice(2)
+const startingCustomerId = args[0] || 1
 
-const Customer = require('../models').Customer;
+const Customer = require('../models').Customer
 
 // Load the source database by sqlite3
-const sqlite3 = require('sqlite3').verbose();
-const sourceFilePath = "./input/db.sqlite3";
-const sourceDb = new sqlite3.Database(sourceFilePath);
+const sqlite3 = require('sqlite3').verbose()
+const sourceFilePath = './input/db.sqlite3'
+const sourceDb = new sqlite3.Database(sourceFilePath)
 
 async function insertCustomer(row) {
   // Insert the customer into MySQL database
@@ -20,10 +22,10 @@ async function insertCustomer(row) {
     where: {
       customer_id: row.customer_id
     }
-  });
+  })
 
   if (customer) {
-    return;
+    return
   }
 
   await Customer.create({
@@ -83,7 +85,7 @@ async function insertCustomer(row) {
     staff: row.staff,
     note: row.note,
     pgCode: row.pgCode,
-    qrCode: row.qrCode,
+    qrCode: row.qrCode
   })
 }
 
@@ -92,27 +94,27 @@ function main(customerId = 0) {
     `SELECT * FROM customers WHERE customer_id >= ${customerId} ORDER BY customer_id LIMIT 1000`,
     async (err, rows) => {
       if (err) {
-        console.error(err.message);
+        console.error(err.message)
       }
 
       if (rows.length === 0) {
-        console.log('Migration completed');
-        process.exit();
+        console.log('Migration completed')
+        process.exit()
       }
 
       for (const row of rows) {
         console.log(`Processing customer ${row.customer_id}...`)
         // Insert the customer into MySQL database
-        await insertCustomer(row);
+        await insertCustomer(row)
       }
 
       // Get the last customer_id processed
-      const lastCustomerId = rows[rows.length - 1].customer_id;
+      const lastCustomerId = rows[rows.length - 1].customer_id
 
       // Continue to migrate the next batch
-      main(lastCustomerId + 1);
+      main(lastCustomerId + 1)
     }
-  );
+  )
 }
 
-main(startingCustomerId);
+main(startingCustomerId)

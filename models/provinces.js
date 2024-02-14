@@ -1,24 +1,28 @@
 module.exports = (sequelize, DataTypes) => {
-  const Province = sequelize.define('Province', {
-    province_id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true
+  const Province = sequelize.define(
+    'Province',
+    {
+      province_id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+      },
+      name: DataTypes.STRING,
+      area_id: DataTypes.INTEGER
     },
-    name: DataTypes.STRING,
-    area_id: DataTypes.INTEGER
-  }, {
-    tableName: 'provinces',
-    timestamps: false,
-    strict: true
-  });
+    {
+      tableName: 'provinces',
+      timestamps: false,
+      strict: true
+    }
+  )
 
-  Province.associate = function(models) {
+  Province.associate = function (models) {
     Province.belongsTo(models.Area, {
       foreignKey: 'area_id',
       as: 'area'
-    });
-  };
+    })
+  }
 
-  return Province;
-};
+  return Province
+}

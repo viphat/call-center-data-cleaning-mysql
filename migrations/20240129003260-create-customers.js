@@ -1,8 +1,8 @@
-'use strict';
+'use strict'
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up (queryInterface, Sequelize) {
+  async up(queryInterface, Sequelize) {
     await queryInterface.createTable('customers', {
       customer_id: {
         type: Sequelize.INTEGER,
@@ -216,11 +216,11 @@ module.exports = {
       },
       qrCode: {
         type: Sequelize.STRING
-      },
-    });
+      }
+    })
   },
 
-  async down (queryInterface, _Sequelize) {
-    await queryInterface.dropTable('customers');
+  async down(queryInterface, _Sequelize) {
+    await queryInterface.dropTable('customers')
   }
-};
+}

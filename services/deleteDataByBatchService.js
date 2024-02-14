@@ -1,4 +1,4 @@
-const Customer = require('../models').Customer;
+const Customer = require('../models').Customer
 
 const deleteDataByBatchService = {
   deleteCustomersByBatch: async (batch, source) => {
@@ -8,13 +8,13 @@ const deleteDataByBatchService = {
           batch: batch,
           source: source
         }
-      });
-      return result;
+      })
+      return result
     } catch (error) {
-      console.log('Error:', error);
-      return error;
+      console.log('Error:', error)
+      return error
     }
   }
 }
 
-module.exports = deleteDataByBatchService;
+module.exports = deleteDataByBatchService

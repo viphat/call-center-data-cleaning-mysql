@@ -1,12 +1,14 @@
 #!/usr/bin/env node
-console.log('Running Data Migration for Customers Table (From Sqlite3 to MySQL)...');
+console.log(
+  'Running Data Migration for Customers Table (From Sqlite3 to MySQL)...'
+)
 
-const Match = require('../models').Match;
+const Match = require('../models').Match
 
 // Load the source database by sqlite3
-const sqlite3 = require('sqlite3').verbose();
-const sourceFilePath = "./input/db.sqlite3";
-const sourceDb = new sqlite3.Database(sourceFilePath);
+const sqlite3 = require('sqlite3').verbose()
+const sourceFilePath = './input/db.sqlite3'
+const sourceDb = new sqlite3.Database(sourceFilePath)
 
 async function importMatch(row) {
   // Check if the record already exists
@@ -14,16 +16,16 @@ async function importMatch(row) {
     where: {
       match_id: row.match_id
     }
-  });
+  })
 
   if (match) {
-    return;
+    return
   }
 
   await Match.create({
     match_id: row.match_id,
     hospital_id: row.hospital_id,
-    name: row.name,
+    name: row.name
   })
 }
 
@@ -33,21 +35,21 @@ function importMatches() {
       `SELECT * FROM matches ORDER BY match_id`,
       async (err, rows) => {
         if (err) {
-          console.error(err.message);
-          reject(err);
+          console.error(err.message)
+          reject(err)
         }
 
         for (const row of rows) {
-          await importMatch(row);
+          await importMatch(row)
         }
 
-        resolve();
+        resolve()
       }
-    );
+    )
   })
 }
 
 importMatches().then(() => {
-  console.log("Matches imported");
-  process.exit();
-});
+  console.log('Matches imported')
+  process.exit()
+})

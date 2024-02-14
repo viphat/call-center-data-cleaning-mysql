@@ -43,17 +43,134 @@ const excelTemplateService = {
     })
   },
 
+  generateValidQCTemplate: async (batch, source, outputPath) => {
+    return new Promise((resolve, reject) => {
+      const workbook = new Excel.Workbook()
+
+      workbook.xlsx.readFile(outputPath).then(() => {
+        const worksheet = workbook.addWorksheet(
+          'Valid Database for QC Calls',
+          {}
+        )
+
+        worksheet.getColumn('A').width = 60
+        worksheet.getRow(1).height = 50
+        worksheet.getRow(4).height = 30
+        worksheet.getRow(5).height = 40
+
+        const logo = workbook.addImage({
+          filename: logoPath,
+          extension: 'png'
+        })
+
+        worksheet.addImage(logo, {
+          tl: { col: 0, row: 0 },
+          br: { col: 1, row: 1 }
+        })
+
+        worksheet.getColumn('B').width = 30
+        worksheet.getColumn('C').width = 30
+
+        worksheet.getCell('B1').value = 'HUGGIES CALL CENTER 2024 PROJECT'
+
+        worksheet.getCell('B1').font = {
+          bold: true,
+          size: 26,
+          name: 'Calibri',
+          family: 2,
+          color: { argb: 'FFFF0000' }
+        }
+
+        worksheet.getCell('B1').alignment = {
+          horizontal: 'center',
+          vertical: 'middle'
+        }
+        worksheet.mergeCells('B1:E1')
+
+        // A2
+        worksheet.getCell('B2').font = {
+          bold: true,
+          size: 14,
+          name: 'Calibri',
+          family: 2,
+          underline: true,
+          color: { argb: 'FFFF0000' }
+        }
+
+        worksheet.getCell('B2').alignment = {
+          horizontal: 'center',
+          vertical: 'middle'
+        }
+
+        worksheet.getCell('B2').value =
+          'Step 1: Database Clean - Summary Report'
+
+        // A4
+        worksheet.getCell('A5').border = {
+          left: { style: 'thin' },
+          right: { style: 'thin' },
+          top: { style: 'thin' },
+          bottom: { style: 'thin' }
+        }
+
+        worksheet.getCell('A5').font = {
+          bold: true,
+          size: 14,
+          name: 'Calibri',
+          family: 2
+        }
+
+        worksheet.getCell('A5').alignment = {
+          horizontal: 'center',
+          vertical: 'middle'
+        }
+
+        worksheet.getCell('A5').fill = {
+          type: 'pattern',
+          pattern: 'solid',
+          fgColor: { argb: 'FFFABF8F' },
+          bgColor: { indexed: 64 }
+        }
+
+        worksheet.getCell('A5').value = batch
+
+        buildReportFirstColumnType3(
+          worksheet,
+          6,
+          'Valid data received from ' + source
+        )
+        buildReportFirstColumnType1(
+          worksheet,
+          7,
+          'Total duplication removed with other Agency'
+        )
+        buildReportFirstColumnType1(worksheet, 8, 'Removed from IMC')
+        buildReportFirstColumnType1(worksheet, 9, 'Removed from OTB')
+        buildReportFirstColumnType1(worksheet, 10, 'Removed from OTB-LHTS')
+        buildReportFirstColumnType2(
+          worksheet,
+          11,
+          'Valid database for QC Calls ' + source
+        )
+
+        // Write to File
+        workbook.xlsx.writeFile(outputPath)
+        resolve(workbook)
+      })
+    })
+  },
+
   generateReportTemplate: async (batch, source, outputPath) => {
     return new Promise((resolve, reject) => {
       const workbook = new Excel.Workbook()
-      let worksheet = workbook.addWorksheet('Abs', {})
+      const worksheet = workbook.addWorksheet('Abs', {})
 
       worksheet.getColumn('A').width = 60
       worksheet.getRow(1).height = 50
       worksheet.getRow(4).height = 30
       worksheet.getRow(5).height = 40
 
-      let logo = workbook.addImage({
+      const logo = workbook.addImage({
         filename: logoPath,
         extension: 'png'
       })

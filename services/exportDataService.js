@@ -1,7 +1,10 @@
 const _ = require('lodash')
 const Excel = require('exceljs')
 const { sequelize } = require('../models/index')
-const { generateReportTemplate } = require('./excelTemplateService')
+const {
+  generateReportTemplate,
+  generateValidQCTemplate
+} = require('./excelTemplateService')
 
 const OUTPUT_PATH = './output/'
 
@@ -123,98 +126,248 @@ class ExportDataService {
 
     rowData = await this.getData('S2')
     await this.writeToExcelFile(workbook, rowData, 'AG')
+    await workbook.xlsx.writeFile(this.outputPath)
+
+    workbook = await generateValidQCTemplate(
+      this.batch,
+      this.source,
+      this.outputPath
+    )
+    const worksheet = workbook.getWorksheet('Valid Database for QC Calls')
+
+    rowData = await this.getValidQCData('All')
+    await this.writeQCDataToExcelFile(worksheet, 'B', rowData, 'Total')
+
+    rowData = await this.getValidQCData('ByBatch')
+    await this.writeQCDataToExcelFile(worksheet, 'C', rowData, this.batch)
+    await workbook.xlsx.writeFile(this.outputPath)
 
     return this.outputPath
   }
 
-  async writeToExcelFile(workbook, rowData, colIndex) {
+  async writeQCDataToExcelFile(worksheet, columnName, rowData, title) {
+    const border = {
+      left: { style: 'thin' },
+      right: { style: 'thin' },
+      top: { style: 'thin' },
+      bottom: { style: 'thin' }
+    }
+
+    const basicFont = {
+      size: 14,
+      name: 'Calibri',
+      family: 2
+    }
+
+    const alignmentRight = { horizontal: 'right', vertical: 'middle' }
+
+    this.setCellProperties(worksheet, `${columnName}5`, {
+      value: title,
+      border: border,
+      alignment: { horizontal: 'center', vertical: 'middle' },
+      fill: {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: 'FFFABF8F' },
+        bgColor: { indexed: 64 }
+      }
+    })
+
+    this.setCellProperties(worksheet, `${columnName}6`, {
+      value: rowData.TotalBase - rowData.HasError,
+      font: _.merge(basicFont, {
+        bold: true,
+        color: { argb: 'FFFF0000' }
+      }),
+      border: border,
+      alignment: { vertical: 'middle' }
+    })
+
+    this.setCellProperties(worksheet, `${columnName}7`, {
+      value: rowData.duplicatedCount,
+      font: basicFont,
+      border: border,
+      alignment: alignmentRight
+    })
+
+    this.setCellProperties(worksheet, `${columnName}8`, {
+      value: this.source == 'IMC' ? rowData.duplicatedCount : 0,
+      font: basicFont,
+      border: border,
+      alignment: alignmentRight
+    })
+
+    this.setCellProperties(worksheet, `${columnName}9`, {
+      value: this.source == 'OTB' ? rowData.duplicatedCount : 0,
+      font: basicFont,
+      border: border,
+      alignment: alignmentRight
+    })
+
+    this.setCellProperties(worksheet, `${columnName}10`, {
+      value: this.source == 'OTB-LHTS' ? rowData.duplicatedCount : 0,
+      font: basicFont,
+      border: border,
+      alignment: alignmentRight
+    })
+
+    this.setCellProperties(worksheet, `${columnName}11`, {
+      value: rowData.TotalBase - rowData.HasError - rowData.duplicatedCount,
+      font: _.merge(basicFont, {
+        bold: true,
+        color: { theme: 0 }
+      }),
+      border: border,
+      alignment: { vertical: 'middle' },
+      fill: {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: 'FF00B0F0' },
+        bgColor: { indexed: 64 }
+      }
+    })
+  }
+
+  setCellProperties(worksheet, cell, options) {
+    const { value, border, alignment, fill, font } = options
+
+    if (value !== undefined) {
+      worksheet.getCell(cell).value = value
+    }
+
+    if (border !== undefined) {
+      worksheet.getCell(cell).border = border
+    }
+
+    if (alignment !== undefined) {
+      worksheet.getCell(cell).alignment = alignment
+    }
+
+    if (fill !== undefined) {
+      worksheet.getCell(cell).fill = fill
+    }
+
+    if (font !== undefined) {
+      worksheet.getCell(cell).font = font
+    }
+  }
+
+  async writeToExcelFile(workbook, rowData, cellIndex) {
     return new Promise((resolve, reject) => {
       let workbook = new Excel.Workbook()
-
-      console.log(rowData)
 
       workbook.xlsx.readFile(this.outputPath).then((response) => {
         let worksheet = workbook.getWorksheet(1)
         let row
 
         row = worksheet.getRow(6)
-        row.getCell(colIndex).value = rowData.TotalBase
+        row.getCell(cellIndex).value = rowData.TotalBase
 
         row = worksheet.getRow(7)
-        row.getCell(colIndex).value = rowData.MissingData
+        row.getCell(cellIndex).value = rowData.MissingData
 
         row = worksheet.getRow(8)
-        row.getCell(colIndex).value = rowData.MissingMomName
+        row.getCell(cellIndex).value = rowData.MissingMomName
 
         row = worksheet.getRow(9)
-        row.getCell(colIndex).value = rowData.MissingAddress
+        row.getCell(cellIndex).value = rowData.MissingAddress
 
         row = worksheet.getRow(10)
-        row.getCell(colIndex).value = rowData.MissingPhone
+        row.getCell(cellIndex).value = rowData.MissingPhone
 
         row = worksheet.getRow(11)
-        row.getCell(colIndex).value = rowData.MissingDate
+        row.getCell(cellIndex).value = rowData.MissingDate
 
         row = worksheet.getRow(12)
-        row.getCell(colIndex).value = rowData.MissingSampling
+        row.getCell(cellIndex).value = rowData.MissingSampling
 
         row = worksheet.getRow(13)
-        row.getCell(colIndex).value = rowData.DuplicatedPhone
+        row.getCell(cellIndex).value = rowData.DuplicatedPhone
 
         row = worksheet.getRow(14)
-        row.getCell(colIndex).value = rowData.DuplicatedPhoneBetweenS1AndS2
+        row.getCell(cellIndex).value = rowData.DuplicatedPhoneBetweenS1AndS2
 
         row = worksheet.getRow(15)
-        row.getCell(colIndex).value = rowData.DuplicatedPhoneS1
+        row.getCell(cellIndex).value = rowData.DuplicatedPhoneS1
 
         row = worksheet.getRow(16)
-        row.getCell(colIndex).value = rowData.DuplicatedPhoneS2
+        row.getCell(cellIndex).value = rowData.DuplicatedPhoneS2
 
         row = worksheet.getRow(17)
-        row.getCell(colIndex).value = rowData.DuplicatedWithinPast2Years
+        row.getCell(cellIndex).value = rowData.DuplicatedWithinPast2Years
 
         row = worksheet.getRow(18)
-        row.getCell(colIndex).value = rowData.DuplicatedOverPast2Years
+        row.getCell(cellIndex).value = rowData.DuplicatedOverPast2Years
 
         row = worksheet.getRow(19)
-        row.getCell(colIndex).value = rowData.DuplicatedWithSameYear
+        row.getCell(cellIndex).value = rowData.DuplicatedWithSameYear
 
         row = worksheet.getRow(20)
-        row.getCell(colIndex).value = rowData.DuplicatedWith2023
+        row.getCell(cellIndex).value = rowData.DuplicatedWith2023
 
         row = worksheet.getRow(21)
-        row.getCell(colIndex).value = rowData.DuplicatedWith2022
+        row.getCell(cellIndex).value = rowData.DuplicatedWith2022
 
         row = worksheet.getRow(22)
-        row.getCell(colIndex).value = rowData.DuplicatedWith2021
+        row.getCell(cellIndex).value = rowData.DuplicatedWith2021
 
         row = worksheet.getRow(23)
-        row.getCell(colIndex).value = rowData.DuplicatedWith2020
+        row.getCell(cellIndex).value = rowData.DuplicatedWith2020
 
         row = worksheet.getRow(24)
-        row.getCell(colIndex).value = rowData.DuplicatedWith2019
+        row.getCell(cellIndex).value = rowData.DuplicatedWith2019
 
         row = worksheet.getRow(25)
-        row.getCell(colIndex).value = rowData.IllogicalData
+        row.getCell(cellIndex).value = rowData.IllogicalData
 
         row = worksheet.getRow(26)
-        row.getCell(colIndex).value = rowData.IllogicalPhone
+        row.getCell(cellIndex).value = rowData.IllogicalPhone
 
         row = worksheet.getRow(27)
-        row.getCell(colIndex).value = rowData.IllogicalDate
+        row.getCell(cellIndex).value = rowData.IllogicalDate
 
         row = worksheet.getRow(28)
-        row.getCell(colIndex).value = rowData.IllogicalOther
+        row.getCell(cellIndex).value = rowData.IllogicalOther
 
         row = worksheet.getRow(29)
-        row.getCell(colIndex).value = rowData.TotalBase - rowData.HasError
+        row.getCell(cellIndex).value = rowData.TotalBase - rowData.HasError
 
         row = worksheet.getRow(30)
-        row.getCell(colIndex).value = rowData.MissingEmail
+        row.getCell(cellIndex).value = rowData.MissingEmail
 
         resolve(workbook.xlsx.writeFile(this.outputPath))
       })
     })
+  }
+
+  async getValidQCData(filterType) {
+    const batch = this.batch
+    const source = this.source
+    const baseQuery =
+      'SELECT COUNT(*) AS TotalBase,\
+    coalesce(SUM(hasError),0) AS HasError,\
+    coalesce(SUM(duplicatedWithAnotherAgency),0) AS duplicatedCount\
+    FROM customers WHERE customers.source = :source'
+
+    let whereCondition = ''
+    let params = { source: source }
+
+    if (batch !== '' && filterType !== 'All') {
+      params = _.merge(params, {
+        batch: batch
+      })
+
+      whereCondition += ' AND customers.batch = :batch'
+    }
+
+    const query = baseQuery + ' ' + whereCondition + ';'
+
+    let data = await sequelize.query(query, {
+      type: sequelize.QueryTypes.SELECT,
+      replacements: params
+    })
+
+    return data[0]
   }
 
   async getData(filterType) {
@@ -222,7 +375,7 @@ class ExportDataService {
     const source = this.source
 
     // Get data from MySQL (Sequelize)
-    let baseQuery =
+    const baseQuery =
       'SELECT COUNT(*) AS TotalBase, coalesce(SUM(hasError),0) AS HasError,\
       coalesce(SUM(missingData),0) AS MissingData,\
       coalesce(SUM(missingMomName),0) AS MissingMomName,\
@@ -323,9 +476,9 @@ class ExportDataService {
       }
     }
 
-    let query = baseQuery + ' ' + joinTable + ' ' + whereCondition + ';'
+    const query = baseQuery + ' ' + joinTable + ' ' + whereCondition + ';'
 
-    let data = await sequelize.query(query, {
+    const data = await sequelize.query(query, {
       type: sequelize.QueryTypes.SELECT,
       replacements: params
     })

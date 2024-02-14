@@ -38,33 +38,16 @@ const excelTemplateService = {
 }
 
 function writeBaseTemplate(workbook, worksheet, title) {
-  worksheet.getColumn('A').width = 6;
-  worksheet.getColumn('B').width = 17;
-  worksheet.getColumn('C').width = 17;
-  worksheet.getColumn('D').width = 30;
-  worksheet.getColumn('E').width = 19.2;
-  worksheet.getColumn('F').width = 19.2;
-  worksheet.getColumn('G').width = 20;
-  worksheet.getColumn('H').width = 9.5;
-  worksheet.getColumn('I').width = 9.5;
-  worksheet.getColumn('J').width = 9.5;
-  worksheet.getColumn('K').width = 13.8;
-  worksheet.getColumn('L').width = 13.8;
-  worksheet.getColumn('M').width = 23.8;
-  worksheet.getColumn('N').width = 23.8;
-  worksheet.getColumn('O').width = 23.8;
-  worksheet.getColumn('P').width = 23.8;
-  worksheet.getColumn('Q').width = 10;
-  worksheet.getColumn('R').width = 9.5;
-  worksheet.getColumn('S').width = 9.5;
-  worksheet.getColumn('T').width = 9.5;
-  worksheet.getColumn('U').width = 10;
-  worksheet.getColumn('V').width = 10;
-  worksheet.getColumn('W').width = 10;
-  worksheet.getColumn('X').width = 25;
-  worksheet.getColumn('Y').width = 10;
+  const columnWidths = [6, 17, 17, 30, 19.2, 19.2, 20, 9.5, 9.5, 9.5, 13.8, 13.8, 23.8, 23.8, 23.8, 23.8, 10, 9.5, 9.5, 9.5, 10, 10, 10, 25, 10];
+  const rowHeight = 30;
 
-  worksheet.getRow('5').height = 30;
+  // Loop from A to Y
+  for (let i = 65; i <= 89; i++) {
+    let char = String.fromCharCode(i);
+    worksheet.getColumn(char).width = columnWidths[i - 65];
+  }
+
+  worksheet.getRow(5).height = rowHeight;
 
   worksheet.getCell('E1').font = {
     bold: true, size: 14, name: 'Arial', family: 2,
@@ -131,192 +114,62 @@ function writeBaseTemplate(workbook, worksheet, title) {
   worksheet.getCell('A5').value = 'No.'
 
   worksheet.mergeCells('B5:B6');
-  worksheet.getCell('B5').font = worksheet.getCell('A5').font;
-  worksheet.getCell('B5').fill = worksheet.getCell('A5').fill;
-  worksheet.getCell('B5').alignment = worksheet.getCell('A5').alignment;
-  worksheet.getCell('B5').border = worksheet.getCell('A5').border;
-  worksheet.getCell('B5').value = 'Họ';
-
+  formatCellAsHeader(worksheet, 'B5', 'Họ');
   worksheet.mergeCells('C5:C6');
-  worksheet.getCell('C5').font = worksheet.getCell('A5').font;
-  worksheet.getCell('C5').fill = worksheet.getCell('A5').fill;
-  worksheet.getCell('C5').alignment = worksheet.getCell('A5').alignment;
-  worksheet.getCell('C5').border = worksheet.getCell('A5').border;
-  worksheet.getCell('C5').value = 'Tên';
-
+  formatCellAsHeader(worksheet, 'C5', 'Tên');
   worksheet.mergeCells('D5:D6');
-  worksheet.getCell('D5').font = worksheet.getCell('A5').font;
-  worksheet.getCell('D5').fill = worksheet.getCell('A5').fill;
-  worksheet.getCell('D5').alignment = worksheet.getCell('A5').alignment;
-  worksheet.getCell('D5').border = worksheet.getCell('A5').border;
-  worksheet.getCell('D5').value = 'Email';
-
+  formatCellAsHeader(worksheet, 'D5', 'Email');
   worksheet.mergeCells('E5:E6');
-  worksheet.getCell('E5').font = worksheet.getCell('A5').font;
-  worksheet.getCell('E5').fill = worksheet.getCell('A5').fill;
-  worksheet.getCell('E5').alignment = worksheet.getCell('A5').alignment;
-  worksheet.getCell('E5').border = worksheet.getCell('A5').border;
-  worksheet.getCell('E5').value = 'Quận/Huyện';
-
-
+  formatCellAsHeader(worksheet, 'E5', 'Quận/Huyện');
   worksheet.mergeCells('F5:F6');
-  worksheet.getCell('F5').font = worksheet.getCell('A5').font;
-  worksheet.getCell('F5').fill = worksheet.getCell('A5').fill;
-  worksheet.getCell('F5').alignment = worksheet.getCell('A5').alignment;
-  worksheet.getCell('F5').border = worksheet.getCell('A5').border;
-  worksheet.getCell('F5').value = 'Tỉnh/Thành';
-
+  formatCellAsHeader(worksheet, 'F5', 'Tỉnh/Thành');
   worksheet.mergeCells('G5:G6');
-  worksheet.getCell('G5').font = worksheet.getCell('A5').font;
-  worksheet.getCell('G5').fill = worksheet.getCell('A5').fill;
-  worksheet.getCell('G5').alignment = worksheet.getCell('A5').alignment;
-  worksheet.getCell('G5').border = worksheet.getCell('A5').border;
-  worksheet.getCell('G5').value = 'Điện Thoại';
+  formatCellAsHeader(worksheet, 'G5', 'Điện Thoại');
 
   worksheet.mergeCells('H5:J5');
-  worksheet.getCell('H5').font = worksheet.getCell('A5').font;
-  worksheet.getCell('H5').fill = worksheet.getCell('A5').fill;
-  worksheet.getCell('H5').alignment = worksheet.getCell('A5').alignment;
-  worksheet.getCell('H5').border = worksheet.getCell('A5').border;
-  worksheet.getCell('H5').value = 'Ngày dự sinh/Ngày mẹ sinh bé';
-
-  worksheet.getCell('H6').font = worksheet.getCell('A5').font;
-  worksheet.getCell('H6').fill = worksheet.getCell('A5').fill;
-  worksheet.getCell('H6').alignment = worksheet.getCell('A5').alignment;
-  worksheet.getCell('H6').border = worksheet.getCell('A5').border;
-  worksheet.getCell('H6').value = 'Ngày';
-
-  worksheet.getCell('I6').font = worksheet.getCell('A5').font;
-  worksheet.getCell('I6').fill = worksheet.getCell('A5').fill;
-  worksheet.getCell('I6').alignment = worksheet.getCell('A5').alignment;
-  worksheet.getCell('I6').border = worksheet.getCell('A5').border;
-  worksheet.getCell('I6').value = 'Tháng';
-
-  worksheet.getCell('J6').font = worksheet.getCell('A5').font;
-  worksheet.getCell('J6').fill = worksheet.getCell('A5').fill;
-  worksheet.getCell('J6').alignment = worksheet.getCell('A5').alignment;
-  worksheet.getCell('J6').border = worksheet.getCell('A5').border;
-  worksheet.getCell('J6').value = 'Năm';
+  formatCellAsHeader(worksheet, 'H5', 'Ngày dự sinh/Ngày mẹ sinh bé');
+  formatCellAsHeader(worksheet, 'H6', 'Ngày');
+  formatCellAsHeader(worksheet, 'I6', 'Tháng');
+  formatCellAsHeader(worksheet, 'J6', 'Năm');
 
   worksheet.mergeCells('K5:L5');
-  worksheet.getCell('K5').font = worksheet.getCell('A5').font;
-  worksheet.getCell('K5').fill = worksheet.getCell('A5').fill;
-  worksheet.getCell('K5').alignment = worksheet.getCell('A5').alignment;
-  worksheet.getCell('K5').border = worksheet.getCell('A5').border;
-  worksheet.getCell('K5').value = 'Đối tượng nhận mẫu';
-
-  worksheet.getCell('K6').font = worksheet.getCell('A5').font;
-  worksheet.getCell('K6').fill = worksheet.getCell('A5').fill;
-  worksheet.getCell('K6').alignment = worksheet.getCell('A5').alignment;
-  worksheet.getCell('K6').border = worksheet.getCell('A5').border;
-  worksheet.getCell('K6').value = 'S1';
-
-  worksheet.getCell('L6').font = worksheet.getCell('A5').font;
-  worksheet.getCell('L6').fill = worksheet.getCell('A5').fill;
-  worksheet.getCell('L6').alignment = worksheet.getCell('A5').alignment;
-  worksheet.getCell('L6').border = worksheet.getCell('A5').border;
-  worksheet.getCell('L6').value = 'S2';
+  formatCellAsHeader(worksheet, 'K5', 'Đối tượng nhận mẫu');
+  formatCellAsHeader(worksheet, 'K6', 'S1');
+  formatCellAsHeader(worksheet, 'L6', 'S2');
 
   worksheet.mergeCells('M5:P5');
-
-  worksheet.getCell('M5').font = worksheet.getCell('A5').font;
-  worksheet.getCell('M5').fill = worksheet.getCell('A5').fill;
-  worksheet.getCell('M5').alignment = worksheet.getCell('A5').alignment;
-  worksheet.getCell('M5').border = worksheet.getCell('A5').border;
-  worksheet.getCell('M5').value = 'Thông tin bệnh viện';
-
-  worksheet.getCell('M6').font = worksheet.getCell('A5').font;
-  worksheet.getCell('M6').fill = worksheet.getCell('A5').fill;
-  worksheet.getCell('M6').alignment = worksheet.getCell('A5').alignment;
-  worksheet.getCell('M6').border = worksheet.getCell('A5').border;
-  worksheet.getCell('M6').value = 'Tên bệnh viện';
-
-  worksheet.getCell('N6').font = worksheet.getCell('A5').font;
-  worksheet.getCell('N6').fill = worksheet.getCell('A5').fill;
-  worksheet.getCell('N6').alignment = worksheet.getCell('A5').alignment;
-  worksheet.getCell('N6').border = worksheet.getCell('A5').border;
-  worksheet.getCell('N6').value = 'Tỉnh Thành';
-
-  worksheet.getCell('O6').font = worksheet.getCell('A5').font;
-  worksheet.getCell('O6').fill = worksheet.getCell('A5').fill;
-  worksheet.getCell('O6').alignment = worksheet.getCell('A5').alignment;
-  worksheet.getCell('O6').border = worksheet.getCell('A5').border;
-  worksheet.getCell('O6').value = 'Channel\n(Key urban/Urban/Rural)';
-
-  worksheet.getCell('P6').font = worksheet.getCell('A5').font;
-  worksheet.getCell('P6').fill = worksheet.getCell('A5').fill;
-  worksheet.getCell('P6').alignment = worksheet.getCell('A5').alignment;
-  worksheet.getCell('P6').border = worksheet.getCell('A5').border;
-  worksheet.getCell('P6').value = 'Khu vực';
+  formatCellAsHeader(worksheet, 'M5', 'Thông tin bệnh viện');
+  formatCellAsHeader(worksheet, 'M6', 'Tên bệnh viện');
+  formatCellAsHeader(worksheet, 'N6', 'Tỉnh Thành');
+  formatCellAsHeader(worksheet, 'O6', 'Channel\n(Key urban/Urban/Rural)');
+  formatCellAsHeader(worksheet, 'P6', 'Khu vực');
 
   worksheet.mergeCells('Q5:Q6');
-  worksheet.getCell('Q5').font = worksheet.getCell('A5').font;
-  worksheet.getCell('Q5').fill = worksheet.getCell('A5').fill;
-  worksheet.getCell('Q5').alignment = worksheet.getCell('A5').alignment;
-  worksheet.getCell('Q5').border = worksheet.getCell('A5').border;
-  worksheet.getCell('Q5').value = 'Agency';
+  formatCellAsHeader(worksheet, 'Q5', 'Agency');
 
   worksheet.mergeCells('R5:T5');
-  worksheet.getCell('R5').font = worksheet.getCell('A5').font;
-  worksheet.getCell('R5').fill = worksheet.getCell('A5').fill;
-  worksheet.getCell('R5').alignment = worksheet.getCell('A5').alignment;
-  worksheet.getCell('R5').border = worksheet.getCell('A5').border;
-  worksheet.getCell('R5').value = 'Thời gian lấy mẫu';
+  formatCellAsHeader(worksheet, 'R5', 'Thời gian lấy mẫu');
 
-  worksheet.getCell('R6').font = worksheet.getCell('A5').font;
-  worksheet.getCell('R6').fill = worksheet.getCell('A5').fill;
-  worksheet.getCell('R6').alignment = worksheet.getCell('A5').alignment;
-  worksheet.getCell('R6').border = worksheet.getCell('A5').border;
-  worksheet.getCell('R6').value = 'Ngày';
-
-  worksheet.getCell('S6').font = worksheet.getCell('A5').font;
-  worksheet.getCell('S6').fill = worksheet.getCell('A5').fill;
-  worksheet.getCell('S6').alignment = worksheet.getCell('A5').alignment;
-  worksheet.getCell('S6').border = worksheet.getCell('A5').border;
-  worksheet.getCell('S6').value = 'Tháng';
-
-  worksheet.getCell('T6').font = worksheet.getCell('A5').font;
-  worksheet.getCell('T6').fill = worksheet.getCell('A5').fill;
-  worksheet.getCell('T6').alignment = worksheet.getCell('A5').alignment;
-  worksheet.getCell('T6').border = worksheet.getCell('A5').border;
-  worksheet.getCell('T6').value = 'Năm';
+  formatCellAsHeader(worksheet, 'R6', 'Ngày');
+  formatCellAsHeader(worksheet, 'S6', 'Tháng');
+  formatCellAsHeader(worksheet, 'T6', 'Năm');
 
   worksheet.mergeCells('U5:U6');
-  worksheet.getCell('U5').font = worksheet.getCell('A5').font;
-  worksheet.getCell('U5').fill = worksheet.getCell('A5').fill;
-  worksheet.getCell('U5').alignment = worksheet.getCell('A5').alignment;
-  worksheet.getCell('U5').border = worksheet.getCell('A5').border;
-  worksheet.getCell('U5').value = 'Staff';
+  formatCellAsHeader(worksheet, 'U5', 'Staff');
 
   worksheet.mergeCells('V5:V6');
-  worksheet.getCell('V5').font = worksheet.getCell('A5').font;
-  worksheet.getCell('V5').fill = worksheet.getCell('A5').fill;
-  worksheet.getCell('V5').alignment = worksheet.getCell('A5').alignment;
-  worksheet.getCell('V5').border = worksheet.getCell('A5').border;
-  worksheet.getCell('V5').value = 'Note';
+  formatCellAsHeader(worksheet, 'V5', 'Note');
 
   worksheet.mergeCells('W5:W6');
-  worksheet.getCell('W5').font = worksheet.getCell('A5').font;
-  worksheet.getCell('W5').fill = worksheet.getCell('A5').fill;
-  worksheet.getCell('W5').alignment = worksheet.getCell('A5').alignment;
-  worksheet.getCell('W5').border = worksheet.getCell('A5').border;
-  worksheet.getCell('W5').value = 'Mã PG';
+  formatCellAsHeader(worksheet, 'W5', 'Mã PG');
 
   worksheet.mergeCells('X5:X6');
-  worksheet.getCell('X5').font = worksheet.getCell('A5').font;
-  worksheet.getCell('X5').fill = worksheet.getCell('A5').fill;
-  worksheet.getCell('X5').alignment = worksheet.getCell('A5').alignment;
-  worksheet.getCell('X5').border = worksheet.getCell('A5').border;
-  worksheet.getCell('X5').value = 'QR Code';
+  formatCellAsHeader(worksheet, 'X5', 'QR Code');
   // End Table Headers
 
   if (worksheet.name.endsWith('Duplication') || worksheet.name.endsWith('Duplication With Another Agency')) {
     worksheet.mergeCells('Y5:Y6');
-    worksheet.getCell('Y5').font = worksheet.getCell('A5').font;
-    worksheet.getCell('Y5').fill = worksheet.getCell('A5').fill;
-    worksheet.getCell('Y5').alignment = worksheet.getCell('A5').alignment;
-    worksheet.getCell('Y5').border = worksheet.getCell('A5').border;
-    worksheet.getCell('Y5').value = 'Tuần';
+    formatCellAsHeader(worksheet, 'Y5', 'Tuần');
   }
 
   // Add Logo
@@ -326,6 +179,14 @@ function writeBaseTemplate(workbook, worksheet, title) {
   });
 
   worksheet.addImage(logo, 'A1:B3');
+}
+
+function formatCellAsHeader(worksheet, cell, value) {
+  worksheet.getCell(cell).font = worksheet.getCell('A5').font;
+  worksheet.getCell(cell).fill = worksheet.getCell('A5').fill;
+  worksheet.getCell(cell).alignment = worksheet.getCell('A5').alignment;
+  worksheet.getCell(cell).border = worksheet.getCell('A5').border;
+  worksheet.getCell(cell).value = value;
 }
 
 module.exports = excelTemplateService;

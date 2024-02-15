@@ -19,3 +19,5 @@ uploads/*
 
 input/*
 !input/.gitkeep
+
+.vscode/

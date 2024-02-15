@@ -24,4 +24,4 @@ const deleteDataController = {
   }
 }
 
-module.exports = deleteDataController
+module.exports = { deleteDataController }

@@ -36,4 +36,4 @@ const exportDataController = {
   }
 }
 
-module.exports = exportDataController
+module.exports = { exportDataController }

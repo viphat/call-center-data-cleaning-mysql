@@ -78,4 +78,4 @@ const importDataController = {
   }
 }
 
-module.exports = importDataController
+module.exports = { importDataController, storage, checkFileType, upload }

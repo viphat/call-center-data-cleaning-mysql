@@ -130,7 +130,6 @@ class CheckDataService {
 
     if (hospital === undefined || hospital === null) {
       const matchedHospital = await this.findMatchedHospital(hospitalName)
-      console.log(matchedHospital)
 
       if (matchedHospital === undefined || matchedHospital === null) {
         this.notFoundHospitals.push(hospitalName)

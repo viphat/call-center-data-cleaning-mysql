@@ -194,8 +194,37 @@ function pageActions() {
           this.isProcessing = false
         })
     },
-    importHospital() {
-      console.log('importHospital')
+    importMatches() {
+      this.isProcessing = true
+      var formData = new FormData(document.getElementById('mainForm'))
+
+      fetch('/import_matches', {
+        method: 'POST',
+        body: formData
+      })
+        .then((response) => {
+          if (!response.ok) {
+            return response
+              .text()
+              .then((text) => Promise.reject(new Error(text)))
+          }
+
+          return response.text()
+        })
+        .then((text) => {
+          alert(text)
+        })
+        .catch((error) => {
+          alert(error.message)
+          console.error(
+            'There has been a problem with your fetch operation:',
+            error
+          )
+          this.isProcessing = false
+        })
+        .finally(() => {
+          this.isProcessing = false
+        })
     }
   }
 }

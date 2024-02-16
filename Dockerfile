@@ -11,6 +11,14 @@ RUN corepack enable && corepack prepare yarn@3.3.0 --activate
 # Verify the installation
 RUN yarn --version
 
+# Install MySQL client from the default Debian repositories
+RUN apt-get update && \
+  apt-get install -y default-mysql-client && \
+  rm -rf /var/lib/apt/lists/*
+
+# Display the version of the installed MySQL client
+RUN mysql --version
+
 # Install app dependencies
 COPY . .
 

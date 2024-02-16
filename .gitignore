@@ -20,4 +20,7 @@ uploads/*
 input/*
 !input/.gitkeep
 
+backup/*
+!backup/.gitkeep
+
 .vscode/

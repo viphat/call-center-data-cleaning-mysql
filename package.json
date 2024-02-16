@@ -18,7 +18,9 @@
     "migrate-hospitals": "node ./scripts/migrate-hospitals.js",
     "migrate-matches": "node ./scripts/migrate-matches.js",
     "migrate-customers": "node ./scripts/migrate-customers.js",
-    "customers-status": "node ./scripts/check-customers-table.js"
+    "customers-status": "node ./scripts/check-customers-table.js",
+    "database-backup": "node ./scripts/backup-database.js",
+    "database-restore": "node ./scripts/restore-database.js"
   },
   "prettier": {
     "semi": false,

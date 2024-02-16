@@ -24,6 +24,7 @@ services:
       - "33060:33060"
     volumes:
       - db-data:/var/lib/mysql
+      - ./backup:/backup
 
 volumes:
   node_modules:

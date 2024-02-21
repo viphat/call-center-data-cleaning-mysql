@@ -19,8 +19,8 @@
     "migrate-matches": "node ./scripts/migrate-matches.js",
     "migrate-customers": "node ./scripts/migrate-customers.js",
     "customers-status": "node ./scripts/check-customers-table.js",
-    "database-backup": "node ./scripts/backup-database.js",
-    "database-restore": "node ./scripts/restore-database.js"
+    "backup-database": "node ./scripts/backup-database.js",
+    "restore-database": "node ./scripts/restore-database.js"
   },
   "prettier": {
     "semi": false,
@@ -49,6 +49,7 @@
   "devDependencies": {
     "concurrently": "^6.4.0",
     "nodemon": "^3.0.3",
+    "postcss": "^8.4.35",
     "prettier": "^3.2.5",
     "sequelize-cli": "^6.6.2"
   }

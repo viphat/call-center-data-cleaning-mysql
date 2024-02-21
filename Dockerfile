@@ -4,6 +4,9 @@ FROM node:18
 # Create app directory
 WORKDIR /app
 
+# Install build tools
+RUN apt-get update && apt-get install -y build-essential python3
+
 # Install Yarn v3
 # Note: Yarn recommends using corepack to enable Yarn
 RUN corepack enable && corepack prepare yarn@3.3.0 --activate
@@ -23,6 +26,8 @@ RUN mysql --version
 COPY . .
 
 # COPY yarn.lock /app
+# Rebuild sqlite3 from source to ensure compatibility
+RUN npm_config_build_from_source=true yarn add sqlite3
 RUN yarn install
 
 EXPOSE 8080

@@ -30,102 +30,105 @@ class ExportDataService {
       this.outputPath
     )
 
+    let worksheet = workbook.getWorksheet('Abs')
+
     // Add data to the report
     let rowData = await this.getData('All')
-    await this.writeToExcelFile(workbook, rowData, 'B')
+    await this.writeToExcelFile(worksheet, rowData, 'B')
 
     rowData = await this.getData('ByBatch')
-    await this.writeToExcelFile(workbook, rowData, 'C')
+    await this.writeToExcelFile(worksheet, rowData, 'C')
 
     rowData = await this.getData('Key Urban 1')
-    await this.writeToExcelFile(workbook, rowData, 'D')
+    await this.writeToExcelFile(worksheet, rowData, 'D')
 
     rowData = await this.getData({ areaId: 1 }) // Hồ Chí Minh
-    await this.writeToExcelFile(workbook, rowData, 'E')
+    await this.writeToExcelFile(worksheet, rowData, 'E')
 
     rowData = await this.getData({ areaId: 2 }) // Hà Nội
-    await this.writeToExcelFile(workbook, rowData, 'F')
+    await this.writeToExcelFile(worksheet, rowData, 'F')
 
     rowData = await this.getData({ areaId: 6 }) // Hải Phòng
-    await this.writeToExcelFile(workbook, rowData, 'G')
+    await this.writeToExcelFile(worksheet, rowData, 'G')
 
     rowData = await this.getData('Key Urban 2')
-    await this.writeToExcelFile(workbook, rowData, 'H')
+    await this.writeToExcelFile(worksheet, rowData, 'H')
 
     rowData = await this.getData({ areaId: 3 }) // Đà Nẵng
-    await this.writeToExcelFile(workbook, rowData, 'I')
+    await this.writeToExcelFile(worksheet, rowData, 'I')
 
     rowData = await this.getData({ areaId: 4 }) // Cần Thơ
-    await this.writeToExcelFile(workbook, rowData, 'J')
+    await this.writeToExcelFile(worksheet, rowData, 'J')
 
     rowData = await this.getData('Urban')
-    await this.writeToExcelFile(workbook, rowData, 'K')
+    await this.writeToExcelFile(worksheet, rowData, 'K')
 
     rowData = await this.getData({ provinceId: 7 }) // Nghệ An
-    await this.writeToExcelFile(workbook, rowData, 'L')
+    await this.writeToExcelFile(worksheet, rowData, 'L')
 
     rowData = await this.getData({ provinceId: 9 }) // Thái Nguyên
-    await this.writeToExcelFile(workbook, rowData, 'M')
+    await this.writeToExcelFile(worksheet, rowData, 'M')
 
     rowData = await this.getData({ provinceId: 23 }) // Bình Dương
-    await this.writeToExcelFile(workbook, rowData, 'N')
+    await this.writeToExcelFile(worksheet, rowData, 'N')
 
     rowData = await this.getData({ provinceId: 21 }) // Bình Định
-    await this.writeToExcelFile(workbook, rowData, 'O')
+    await this.writeToExcelFile(worksheet, rowData, 'O')
 
     rowData = await this.getData({ provinceId: 17 }) // Bắc Ninh
-    await this.writeToExcelFile(workbook, rowData, 'P')
+    await this.writeToExcelFile(worksheet, rowData, 'P')
 
     rowData = await this.getData({ provinceId: 14 }) // Hưng Yên
-    await this.writeToExcelFile(workbook, rowData, 'Q')
+    await this.writeToExcelFile(worksheet, rowData, 'Q')
 
     rowData = await this.getData({ provinceId: 27 }) // Bến Tre
-    await this.writeToExcelFile(workbook, rowData, 'R')
+    await this.writeToExcelFile(worksheet, rowData, 'R')
 
     rowData = await this.getData({ provinceId: 46 }) // Bạc Liêu
-    await this.writeToExcelFile(workbook, rowData, 'S')
+    await this.writeToExcelFile(worksheet, rowData, 'S')
 
     rowData = await this.getData({ provinceId: 47 }) // Kiên Giang
-    await this.writeToExcelFile(workbook, rowData, 'T')
+    await this.writeToExcelFile(worksheet, rowData, 'T')
 
     rowData = await this.getData({ provinceId: 31 }) // Vĩnh Long
-    await this.writeToExcelFile(workbook, rowData, 'U')
+    await this.writeToExcelFile(worksheet, rowData, 'U')
 
     rowData = await this.getData({ provinceId: 24 }) // Đồng Nai
-    await this.writeToExcelFile(workbook, rowData, 'V')
+    await this.writeToExcelFile(worksheet, rowData, 'V')
 
     rowData = await this.getData({ provinceId: 18 }) // Thừa Thiên Huế
-    await this.writeToExcelFile(workbook, rowData, 'W')
+    await this.writeToExcelFile(worksheet, rowData, 'W')
 
     rowData = await this.getData({ provinceId: 20 }) // Đắk Lắk
-    await this.writeToExcelFile(workbook, rowData, 'X')
+    await this.writeToExcelFile(worksheet, rowData, 'X')
 
     rowData = await this.getData({ provinceId: 11 }) // Hải Dương
-    await this.writeToExcelFile(workbook, rowData, 'Y')
+    await this.writeToExcelFile(worksheet, rowData, 'Y')
 
     rowData = await this.getData({ provinceId: 15 }) // Ninh Bình
-    await this.writeToExcelFile(workbook, rowData, 'Z')
+    await this.writeToExcelFile(worksheet, rowData, 'Z')
 
     rowData = await this.getData({ provinceId: 19 }) // Quảng Ngãi
-    await this.writeToExcelFile(workbook, rowData, 'AA')
+    await this.writeToExcelFile(worksheet, rowData, 'AA')
 
     rowData = await this.getData({ provinceId: 48 }) // Sóc Trăng
-    await this.writeToExcelFile(workbook, rowData, 'AB')
+    await this.writeToExcelFile(worksheet, rowData, 'AB')
 
     rowData = await this.getData({ provinceId: 29 }) // Trà Vinh
-    await this.writeToExcelFile(workbook, rowData, 'AC')
+    await this.writeToExcelFile(worksheet, rowData, 'AC')
 
     rowData = await this.getData({ provinceId: 16 }) // Vĩnh Phúc
-    await this.writeToExcelFile(workbook, rowData, 'AD')
+    await this.writeToExcelFile(worksheet, rowData, 'AD')
 
     rowData = await this.getData({ provinceId: 13 }) // Thái Bình
-    await this.writeToExcelFile(workbook, rowData, 'AE')
+    await this.writeToExcelFile(worksheet, rowData, 'AE')
 
     rowData = await this.getData('S1')
-    await this.writeToExcelFile(workbook, rowData, 'AF')
+    await this.writeToExcelFile(worksheet, rowData, 'AF')
 
     rowData = await this.getData('S2')
-    await this.writeToExcelFile(workbook, rowData, 'AG')
+    await this.writeToExcelFile(worksheet, rowData, 'AG')
+
     await workbook.xlsx.writeFile(this.outputPath)
 
     workbook = await generateValidQCTemplate(
@@ -133,7 +136,7 @@ class ExportDataService {
       this.source,
       this.outputPath
     )
-    const worksheet = workbook.getWorksheet('Valid Database for QC Calls')
+    worksheet = workbook.getWorksheet('Valid Database for QC Calls')
 
     rowData = await this.getValidQCData('All')
     await this.writeQCDataToExcelFile(worksheet, 'B', rowData, 'Total')
@@ -252,92 +255,83 @@ class ExportDataService {
     }
   }
 
-  async writeToExcelFile(workbook, rowData, cellIndex) {
-    return new Promise((resolve, reject) => {
-      let workbook = new Excel.Workbook()
+  async writeToExcelFile(worksheet, rowData, cellIndex) {
+    let row
 
-      workbook.xlsx.readFile(this.outputPath).then((response) => {
-        let worksheet = workbook.getWorksheet(1)
-        let row
+    row = worksheet.getRow(6)
+    row.getCell(cellIndex).value = rowData.TotalBase
 
-        row = worksheet.getRow(6)
-        row.getCell(cellIndex).value = rowData.TotalBase
+    row = worksheet.getRow(7)
+    row.getCell(cellIndex).value = rowData.MissingData
 
-        row = worksheet.getRow(7)
-        row.getCell(cellIndex).value = rowData.MissingData
+    row = worksheet.getRow(8)
+    row.getCell(cellIndex).value = rowData.MissingMomName
 
-        row = worksheet.getRow(8)
-        row.getCell(cellIndex).value = rowData.MissingMomName
+    row = worksheet.getRow(9)
+    row.getCell(cellIndex).value = rowData.MissingAddress
 
-        row = worksheet.getRow(9)
-        row.getCell(cellIndex).value = rowData.MissingAddress
+    row = worksheet.getRow(10)
+    row.getCell(cellIndex).value = rowData.MissingPhone
 
-        row = worksheet.getRow(10)
-        row.getCell(cellIndex).value = rowData.MissingPhone
+    row = worksheet.getRow(11)
+    row.getCell(cellIndex).value = rowData.MissingDate
 
-        row = worksheet.getRow(11)
-        row.getCell(cellIndex).value = rowData.MissingDate
+    row = worksheet.getRow(12)
+    row.getCell(cellIndex).value = rowData.MissingSampling
 
-        row = worksheet.getRow(12)
-        row.getCell(cellIndex).value = rowData.MissingSampling
+    row = worksheet.getRow(13)
+    row.getCell(cellIndex).value = rowData.DuplicatedPhone
 
-        row = worksheet.getRow(13)
-        row.getCell(cellIndex).value = rowData.DuplicatedPhone
+    row = worksheet.getRow(14)
+    row.getCell(cellIndex).value = rowData.DuplicatedPhoneBetweenS1AndS2
 
-        row = worksheet.getRow(14)
-        row.getCell(cellIndex).value = rowData.DuplicatedPhoneBetweenS1AndS2
+    row = worksheet.getRow(15)
+    row.getCell(cellIndex).value = rowData.DuplicatedPhoneS1
 
-        row = worksheet.getRow(15)
-        row.getCell(cellIndex).value = rowData.DuplicatedPhoneS1
+    row = worksheet.getRow(16)
+    row.getCell(cellIndex).value = rowData.DuplicatedPhoneS2
 
-        row = worksheet.getRow(16)
-        row.getCell(cellIndex).value = rowData.DuplicatedPhoneS2
+    row = worksheet.getRow(17)
+    row.getCell(cellIndex).value = rowData.DuplicatedWithinPast2Years
 
-        row = worksheet.getRow(17)
-        row.getCell(cellIndex).value = rowData.DuplicatedWithinPast2Years
+    row = worksheet.getRow(18)
+    row.getCell(cellIndex).value = rowData.DuplicatedOverPast2Years
 
-        row = worksheet.getRow(18)
-        row.getCell(cellIndex).value = rowData.DuplicatedOverPast2Years
+    row = worksheet.getRow(19)
+    row.getCell(cellIndex).value = rowData.DuplicatedWithSameYear
 
-        row = worksheet.getRow(19)
-        row.getCell(cellIndex).value = rowData.DuplicatedWithSameYear
+    row = worksheet.getRow(20)
+    row.getCell(cellIndex).value = rowData.DuplicatedWith2023
 
-        row = worksheet.getRow(20)
-        row.getCell(cellIndex).value = rowData.DuplicatedWith2023
+    row = worksheet.getRow(21)
+    row.getCell(cellIndex).value = rowData.DuplicatedWith2022
 
-        row = worksheet.getRow(21)
-        row.getCell(cellIndex).value = rowData.DuplicatedWith2022
+    row = worksheet.getRow(22)
+    row.getCell(cellIndex).value = rowData.DuplicatedWith2021
 
-        row = worksheet.getRow(22)
-        row.getCell(cellIndex).value = rowData.DuplicatedWith2021
+    row = worksheet.getRow(23)
+    row.getCell(cellIndex).value = rowData.DuplicatedWith2020
 
-        row = worksheet.getRow(23)
-        row.getCell(cellIndex).value = rowData.DuplicatedWith2020
+    row = worksheet.getRow(24)
+    row.getCell(cellIndex).value = rowData.DuplicatedWith2019
 
-        row = worksheet.getRow(24)
-        row.getCell(cellIndex).value = rowData.DuplicatedWith2019
+    row = worksheet.getRow(25)
+    row.getCell(cellIndex).value = rowData.IllogicalData
 
-        row = worksheet.getRow(25)
-        row.getCell(cellIndex).value = rowData.IllogicalData
+    row = worksheet.getRow(26)
+    row.getCell(cellIndex).value = rowData.IllogicalPhone
 
-        row = worksheet.getRow(26)
-        row.getCell(cellIndex).value = rowData.IllogicalPhone
+    row = worksheet.getRow(27)
+    row.getCell(cellIndex).value = rowData.IllogicalDate
 
-        row = worksheet.getRow(27)
-        row.getCell(cellIndex).value = rowData.IllogicalDate
+    row = worksheet.getRow(28)
+    row.getCell(cellIndex).value = rowData.IllogicalOther
 
-        row = worksheet.getRow(28)
-        row.getCell(cellIndex).value = rowData.IllogicalOther
+    row = worksheet.getRow(29)
+    row.getCell(cellIndex).value = rowData.TotalBase - rowData.HasError
 
-        row = worksheet.getRow(29)
-        row.getCell(cellIndex).value = rowData.TotalBase - rowData.HasError
-
-        row = worksheet.getRow(30)
-        row.getCell(cellIndex).value = rowData.MissingEmail
-
-        resolve(workbook.xlsx.writeFile(this.outputPath))
-      })
-    })
+    row = worksheet.getRow(30)
+    row.getCell(cellIndex).value = rowData.MissingEmail
   }
 
   async getValidQCData(filterType) {

@@ -1,4 +1,4 @@
-const Customer = require('../models').Customer
+const { Customer, Hospital, Province, Area } = require('../models')
 const { Op } = require('sequelize')
 
 const createCustomerService = {
@@ -60,7 +60,7 @@ const createCustomerService = {
       return customer
     }
 
-    const res = await Customer.findOne({
+    const duplicated = await Customer.findOne({
       where: {
         phone: customer.phone,
         source: {
@@ -69,14 +69,39 @@ const createCustomerService = {
         customer_id: {
           [Op.ne]: customer.customer_id
         }
-      }
+      },
+      include: [
+        {
+          model: Hospital,
+          as: 'hospital',
+          include: [
+            {
+              model: Province,
+              as: 'province',
+              include: [
+                {
+                  model: Area,
+                  as: 'area'
+                }
+              ]
+            }
+          ]
+        }
+      ]
     })
 
-    if (res === null) {
+    if (duplicated === null) {
       return customer
     }
 
-    customer.duplicateWithAnotherAgency = res
+    if (duplicated.hospital) {
+      duplicated.hospital_name = duplicated.hospital.name
+      duplicated.province_name = duplicated.hospital.province.name
+      duplicated.area_channel = duplicated.hospital.province.area.channel
+      duplicated.area_name = duplicated.hospital.province.area.name
+    }
+
+    customer.duplicateWithAnotherAgency = duplicated
     customer.duplicatedWithAnotherAgency = 1
     customer.isPhoneDuplicatedWithAnotherAgency = true
 
@@ -101,29 +126,54 @@ const createCustomerService = {
       return customer
     }
 
-    const res = await Customer.findOne({
+    const duplicated = await Customer.findOne({
       where: {
         phone: customer.phone,
         source: customer.source,
         customer_id: {
           [Op.ne]: customer.customer_id
         }
-      }
+      },
+      include: [
+        {
+          model: Hospital,
+          as: 'hospital',
+          include: [
+            {
+              model: Province,
+              as: 'province',
+              include: [
+                {
+                  model: Area,
+                  as: 'area'
+                }
+              ]
+            }
+          ]
+        }
+      ]
     })
 
-    if (res === null) {
+    if (duplicated === null) {
       return customer
     }
 
+    if (duplicated.hospital) {
+      duplicated.hospital_name = duplicated.hospital.name
+      duplicated.province_name = duplicated.hospital.province.name
+      duplicated.area_channel = duplicated.hospital.province.area.channel
+      duplicated.area_name = duplicated.hospital.province.area.name
+    }
+
     customer.isPhoneDuplicated = true
-    customer.duplicatedWith = res
+    customer.duplicatedWith = duplicated
     customer.duplicatedPhone = 1
 
-    if (res.collectedYear) {
+    if (duplicated.collectedYear) {
       var duplicatedRecordCollectedDate = new Date(
-        res.collectedYear,
-        res.collectedMonth - 1,
-        res.collectedDay
+        duplicated.collectedYear,
+        duplicated.collectedMonth - 1,
+        duplicated.collectedDay
       )
       var currentCollectedDate = new Date(
         customer.collectedYear,
@@ -145,9 +195,9 @@ const createCustomerService = {
         customer.duplicatedOverPast2Years = 0
       } else {
         if (
-          customer.collectedYear == res.collectedYear + year &&
-          customer.collectedMonth == res.collectedMonth &&
-          customer.collectedDay == res.collectedDay
+          customer.collectedYear == duplicated.collectedYear + year &&
+          customer.collectedMonth == duplicated.collectedMonth &&
+          customer.collectedDay == duplicated.collectedDay
         ) {
           customer.duplicatedWithinPast2Years = 1
           customer.duplicatedOverPast2Years = 0

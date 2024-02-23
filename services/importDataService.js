@@ -321,16 +321,16 @@ class ImportDataService {
     let query =
       'SELECT hospitals.hospital_id, hospitals.name AS hospital_name, provinces.name AS province_name, areas.area_id AS area_id, areas.name As area_name, areas.channel as area_channel FROM hospitals LEFT JOIN matches ON hospitals.hospital_id = matches.hospital_id JOIN provinces ON hospitals.province_id = provinces.province_id JOIN areas ON provinces.area_id = areas.area_id WHERE hospitals.name = ? OR matches.name = ?;'
 
-    const hospital = await sequelize.query(query, {
+    const hospitals = await sequelize.query(query, {
       replacements: [hospitalName, hospitalName],
       type: sequelize.QueryTypes.SELECT
     })
 
-    if (hospital.length === 0) {
+    if (hospitals.length === 0) {
       throw new Error('Không tìm thấy bệnh viện ' + hospitalName)
     }
 
-    return hospital
+    return hospitals[0]
   }
 
   isIllogicalData(customer, row) {

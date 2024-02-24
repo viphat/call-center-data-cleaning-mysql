@@ -758,7 +758,7 @@ function buildDataRow(worksheet, rowIndex, cellIndex) {
 
 function writeBaseTemplate(workbook, worksheet, title) {
   const columnWidths = [
-    6, 17, 17, 30, 19.2, 19.2, 20, 9.5, 9.5, 9.5, 13.8, 13.8, 23.8, 23.8, 23.8,
+    15, 17, 17, 30, 19.2, 19.2, 20, 9.5, 9.5, 9.5, 13.8, 13.8, 23.8, 23.8, 23.8,
     23.8, 10, 9.5, 9.5, 9.5, 10, 10, 10, 25, 10
   ]
   const rowHeight = 30

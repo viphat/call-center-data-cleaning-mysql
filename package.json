@@ -18,7 +18,7 @@
     "migrate-hospitals": "node ./scripts/migrate-hospitals.js",
     "migrate-matches": "node ./scripts/migrate-matches.js",
     "migrate-customers": "node ./scripts/migrate-customers.js",
-    "customers-status": "node ./scripts/check-customers-table.js",
+    "check-customers": "node ./scripts/check-customers-table.js",
     "backup-database": "node ./scripts/backup-database.js",
     "restore-database": "node ./scripts/restore-database.js"
   },

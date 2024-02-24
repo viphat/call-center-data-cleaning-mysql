@@ -219,7 +219,9 @@ class ImportDataService {
 
     let outputSheetName = 'Valid'
 
-    if (duplicateData === true) {
+    if (duplicateDataWithAnotherAgency === true) {
+      outputSheetName = 'Duplication With Another Agency'
+    } else if (duplicateData === true) {
       if (customer.duplicatedWithinPast2Years === 1) {
         outputSheetName = 'Duplication - Within 24 Months'
       } else {
@@ -227,8 +229,6 @@ class ImportDataService {
       }
     } else if (missingData || illogicalData) {
       outputSheetName = 'Invalid'
-    } else if (duplicateDataWithAnotherAgency === true) {
-      outputSheetName = 'Duplication With Another Agency'
     }
 
     if (duplicateData == true || missingData == true || illogicalData == true) {

@@ -10,12 +10,8 @@ const checkDataController = {
 
       const source = req.body.source
 
-      if (source == undefined) {
+      if (source == undefined || source == null || source == '') {
         return res.status(400).send('Error: Source is undefined!')
-      }
-
-      if (req.file == undefined) {
-        return res.status(400).send('Error: No File Selected!')
       }
 
       const outputPath = await checkMissingHospitals(req.file, source)

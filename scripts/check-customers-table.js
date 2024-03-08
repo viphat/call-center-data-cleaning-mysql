@@ -22,10 +22,12 @@ async function main() {
     }
   })
 
-  console.log(`Number of customers with duplicatedWithAnotherAgency: ${customers.length}`)
+  console.log(
+    `Number of customers with duplicatedWithAnotherAgency: ${customers.length}`
+  )
 
   // print all customers with duplicatedWithAnotherAgency
-  customers.forEach(customer => {
+  customers.forEach((customer) => {
     console.log(customer.customer_id)
     console.log(customer.phone)
   })

@@ -243,10 +243,10 @@ class ImportDataService {
 
       // 2024-02-26 - Not count as duplicated with another agency if it has been counted with other errors
       if (duplicateDataWithAnotherAgency == true) {
-        customer.duplicateWithAnotherAgency = null;
-        customer.duplicatedWithAnotherAgency = 0;
-        customer.isPhoneDuplicatedWithAnotherAgency = false;
-        duplicateDataWithAnotherAgency = false;
+        customer.duplicateWithAnotherAgency = null
+        customer.duplicatedWithAnotherAgency = 0
+        customer.isPhoneDuplicatedWithAnotherAgency = false
+        duplicateDataWithAnotherAgency = false
       }
     }
 

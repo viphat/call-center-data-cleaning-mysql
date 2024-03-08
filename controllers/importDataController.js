@@ -49,8 +49,12 @@ const importDataController = {
       const batch = req.body.batch
       const source = req.body.source
 
-      if (batch == undefined || source == undefined) {
-        return res.status(400).send('Error: Batch or Source is undefined!')
+      if (batch == undefined || batch == null || batch == '') {
+        return res.status(400).send('Error: Batch is undefined!')
+      }
+
+      if (source == undefined || source == null || source == '') {
+        return res.status(400).send('Error: Source is undefined!')
       }
 
       if (req.file == undefined) {

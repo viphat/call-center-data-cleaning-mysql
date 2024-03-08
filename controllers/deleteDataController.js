@@ -10,11 +10,11 @@ const deleteDataController = {
     console.log('Batch:', batch)
     console.log('Source:', source)
 
-    if (!batch) {
+    if (batch == undefined || batch == null || batch == '') {
       return res.status(400).send('Error: Chưa khai báo batch!')
     }
 
-    if (!source) {
+    if (source == undefined || source == null || source == '') {
       return res.status(400).send('Error: Chưa khai báo source!')
     }
 
